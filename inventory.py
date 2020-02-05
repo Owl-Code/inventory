@@ -7,9 +7,9 @@ pd.set_option('display.max_rows',500)
 pd.set_option('display.max_columns',500)
 
 
-PRODUCT_DATA = {'Product': 'ProductImportTemplate.csv',
-                    'Barcode': 'StockBarcodeImportTemplate.csv',
-                    'Stock': 'StockImportTemplate.csv'}
+PRODUCT_DATA = {1: 'ProductImportTemplate.csv',
+                    2: 'StockBarcodeImportTemplate.csv',
+                    3: 'StockImportTemplate.csv'}
 
 def select_data():
     while True:
@@ -18,13 +18,13 @@ def select_data():
             print("Input 1-3")
         else:
             if int(user_choice) == 1:
-                df = pd.read_csv(PRODUCT_DATA['Product'])
+                df = pd.read_csv(PRODUCT_DATA[user_choice])
                 return df
             elif int(user_choice) == 2:
-                df = pd.read_csv(PRODUCT_DATA['Barcode'])
+                df = pd.read_csv(PRODUCT_DATA[user_choice])
                 return df
             elif int(user_choice) == 3:
-                df = pd.read_csv(PRODUCT_DATA['Stock'])
+                df = pd.read_csv(PRODUCT_DATA[user_choice])
                 return df
             else:
                 print('Something went wrong')
