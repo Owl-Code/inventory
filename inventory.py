@@ -63,6 +63,34 @@ def find_null(df):
         return null_df
     return df
 
+def find_inventory(df):
+    """
+        Find products with more inventory than a user defined 
+        input. Return a data frame of products with inventory 
+        over max value
+        ARGS:
+            (pandas.DataFrame) df
+        RETURN:
+            inventory_df - pandas dataframe with Product over max_inventory
+    """
+    while True:
+        max_inventory = input('How much for max inventory?\n')
+        try:
+            max_inventory = int(max_inventory)
+            break
+        except:
+            print('Not a number')
+    if 'Current Stock' in df:
+        print('Stock found')
+        total_stock = int(df['Current Stock'].sum())
+        df = df[df['Current Stock']> max_inventory]
+        df = df[['Product Name', 'Current Stock']]
+        print('Total Stock count: ', total_stock)
+        print('Stock over {} count: '.format(max_inventory), int(df['Current Stock'].sum()))
+        print('Approximate real count: ', total_stock - int(df['Current Stock'].sum()) + int(df['Current Stock'].count()*100))
+
+        return df
+    return df 
 
 
 def main():
@@ -70,6 +98,8 @@ def main():
     explore_data(df)
     null_df = find_null(df)
     explore_data(null_df)
+    inventory_df = find_inventory(df)
+    explore_data(inventory_df)
 
 if __name__ == "__main__":
     main()
