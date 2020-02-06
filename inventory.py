@@ -12,7 +12,7 @@ PRODUCT_DATA = {1: 'ProductImportTemplate.csv',
 
 def select_data():
     """
-        Ask user for a numerical input (1-3) and returns data set.
+        Ask user for a csv filename 
 
         ARGS: 
             None
@@ -20,21 +20,12 @@ def select_data():
             df - Pandas data frame loaded from a csv
     """
     while True:
-        user_choice = input('1. Product\n2. Barcode\n3. Stock\n')
-        if len(user_choice) > 1 and (user_choice < '1' and user_choice >= '3'):
-            print("Input 1-3")
-        else:
-            if int(user_choice) == 1:
-                df = pd.read_csv(PRODUCT_DATA[int(user_choice)])
-                return df
-            elif int(user_choice) == 2:
-                df = pd.read_csv(PRODUCT_DATA[int(user_choice)])
-                return df
-            elif int(user_choice) == 3:
-                df = pd.read_csv(PRODUCT_DATA[int(user_choice)])
-                return df
-            else:
-                print('Something went wrong')
+        user_choice = input('Name of csv\n')
+        try:
+            df = pd.read_csv(user_choice)
+            return df
+        except:
+            print('Something went wrong\nYou Entered {}\n'.format(user_choice))
             
 def explore_data(df):
     while True:
