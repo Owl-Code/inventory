@@ -36,24 +36,40 @@ def explore_data(df):
         RETURNS:
             None
     """
+    
+    line = 0
     while True:
-        line = 0
         print(df[line:line+5])
         print('5 more lines?(Y/N)')
         if input().lower() == 'n':
             break
-        line +=5
+        line += 5
 
 
 def find_null(df):
-    return 0
+    """
+        Find null barcode columns in data frame
+        found at https://chartio.com/resources/tutorials/how-to-check-if-any-value-is-nan-in-a-pandas-dataframe/
+        ARGS: 
+            (pandas.DataFrame) df
+        RETURNS:
+            null_df - pandas dataframe of rows with a null barcode
+
+    """
+    if 'Barcode' in df:
+        null_df = df[df['Barcode'].isnull()]
+        print('null barcode found')
+        null_df = null_df[['Product Name', 'Barcode']]
+        return null_df
+    return df
 
 
 
 def main():
     df = select_data()
     explore_data(df)
-    find_null(df)
+    null_df = find_null(df)
+    explore_data(null_df)
 
 if __name__ == "__main__":
     main()
