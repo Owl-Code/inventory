@@ -28,10 +28,18 @@ def select_data():
             print('Something went wrong\nYou Entered {}\n'.format(user_choice))
             
 def explore_data(df):
+    """
+        Lets user look through five rows of the data frame and prompts i
+        if they would like to continue.
+        ARGS:
+            (pandas.DataFrame) df
+        RETURNS:
+            None
+    """
     while True:
         line = 0
         print(df[line:line+5])
-        print('Y/N')
+        print('5 more lines?(Y/N)')
         if input().lower() == 'n':
             break
         line +=5
