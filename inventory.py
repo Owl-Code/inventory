@@ -12,7 +12,7 @@ PRODUCT_DATA = {1: 'ProductImportTemplate.csv',
 
 def select_data():
     """
-        Ask user for a csv filename 
+        Ask user for a csv filename(s)
 
         ARGS: 
             None
@@ -45,6 +45,7 @@ def explore_data(df):
     while True:
         print(df[line:line+5])
         print('5 more lines?(Y/N)')
+        #need to add a check for end of dataframe
         if input().lower() == 'n':
             break
         line += 5
@@ -97,10 +98,23 @@ def find_inventory(df):
     return df 
 
 def find_sell_value(df):
+    """
+        Find the the value of the store by multiplying 
+        the current held stock by the sell price. 
+        ARGS:
+            (pandas.DataFrame) df
+        RETURNS: 
+            sum() - the sum of all current stock rows * sale price rows
+    """
+    sale_price_idx = ''
     if 'Sale Price' in df:
-        print('Sale Price found')
-        if 'Current Stock' in df:
-            print('Total asset worth: ', (df['Current Stock'] * df['Sale Price']).sum())
+        sale_price_idx = 'Sale Price'
+    elif 'Selling Price' in df:
+        sale_price_idx = 'Selling Price'
+
+    if 'Current Stock' in df:
+        return (df['Current Stock'] * df[sale_price_idx]).sum()
+
 
 def main():
     df = select_data()
@@ -110,8 +124,9 @@ def main():
     explore_data(null_df)
     inventory_df = find_inventory(df_join)
     explore_data(inventory_df)
-    find_sell_value(df_join)
-
+    full_inventory_value = find_sell_value(df_join)
+    overstocked_value = find_sell_value(inventory_df.merge(df[0]))
+    print('Full inventory value: {}\nOverstocked Value: {}\nApproximate Real Value: {}'.format(full_inventory_value, overstocked_value, full_inventory_value-overstocked_value))
 
 if __name__ == "__main__":
     main()
