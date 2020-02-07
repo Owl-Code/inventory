@@ -16,7 +16,7 @@ def select_data():
             stock_df - Pandas data frame loaded from stock csv
     """
     while True:
-        user_choice = list(input('Name of csv\n').split(', '))
+        user_choice = list(input('Name of csv(s) seperated by commas\n').split(', '))
         df = []
         try:
             for choice in user_choice:
