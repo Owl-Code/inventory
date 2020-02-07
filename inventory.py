@@ -17,12 +17,16 @@ def select_data():
         ARGS: 
             None
         RETURN:
-            df - Pandas data frame loaded from a csv
+            product_df - Pandas data frame loaded from a product csv
+            stock_df - Pandas data frame loaded from stock csv
     """
     while True:
-        user_choice = input('Name of csv\n')
+        user_choice = list(input('Name of csv\n').split(', '))
+        df = []
         try:
-            df = pd.read_csv(user_choice)
+            for choice in user_choice:
+                print(choice)
+                df.append(pd.read_csv(choice))
             return df
         except:
             print('Something went wrong\nYou Entered {}\n'.format(user_choice))
@@ -92,14 +96,22 @@ def find_inventory(df):
         return df
     return df 
 
+def find_sell_value(df):
+    if 'Sale Price' in df:
+        print('Sale Price found')
+        if 'Current Stock' in df:
+            print('Total asset worth: ', (df['Current Stock'] * df['Sale Price']).sum())
 
 def main():
     df = select_data()
-    explore_data(df)
-    null_df = find_null(df)
+    df_join = df[0].merge(df[1], on='Product Name')
+    explore_data(df_join)
+    null_df = find_null(df_join)
     explore_data(null_df)
-    inventory_df = find_inventory(df)
+    inventory_df = find_inventory(df_join)
     explore_data(inventory_df)
+    find_sell_value(df_join)
+
 
 if __name__ == "__main__":
     main()
