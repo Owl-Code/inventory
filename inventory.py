@@ -5,6 +5,9 @@ pd.set_option('display.width',1000)
 pd.set_option('display.max_rows',500)
 pd.set_option('display.max_columns',500)
 
+SKU_OVER_K = 7
+K = 1000
+
 def select_data():
     """
         Ask user for a csv filename(s)
@@ -44,7 +47,6 @@ def explore_data(df):
         if input().lower() == 'n':
             break
         line += 5
-
 
 def find_null(df):
     """
@@ -87,7 +89,7 @@ def find_inventory(df):
         df = df[['Product Name', 'Current Stock']]
         print('Total Stock count: ', total_stock)
         print('Stock over {} count: '.format(max_inventory), int(df['Current Stock'].sum()))
-        print('Approximate real count: ', total_stock - int(df['Current Stock'].sum()) + int(df['Current Stock'].count()*100))
+        print('Approximate real count: ', total_stock - int(df['Current Stock'].sum()) + (K * SKU_OVER_K))
 
         return df
     return df 
@@ -110,6 +112,23 @@ def find_sell_value(df):
     if 'Current Stock' in df:
         return (df['Current Stock'] * df[sale_price_idx]).sum()
 
+def find_avg_sale_price(df):
+    """
+        Finds the mean of 'Sale Price' Column if it exist
+
+        ARGS:
+            (pandas.DataFrame) - df
+        RETURNS:
+            mean() - the mean of Sale Price column
+    """
+    idx_price = ''
+    if 'Sale Price' in df.columns:
+        idx_price = 'Sale Price'
+    elif 'Selling Price' in df.columns:
+        idx_price = 'Selling Price'
+    else:
+        return 0
+    return df[idx_price].mean()
 
 def main():
     df = select_data()
@@ -121,7 +140,10 @@ def main():
     explore_data(inventory_df)
     full_inventory_value = find_sell_value(df_join)
     overstocked_value = find_sell_value(inventory_df.merge(df[0]))
-    print('Full inventory value: {}\nOverstocked Value: {}\nApproximate Real Value: {}'.format(full_inventory_value, overstocked_value, full_inventory_value-overstocked_value))
+    avg_sale_price = find_avg_sale_price(df_join)
+    estimate_real_value = full_inventory_value - overstocked_value + (K * SKU_OVER_K * avg_sale_price)
+    print('Average sale price: {}'.format(avg_sale_price))
+    print('Full inventory value: {}\nOverstocked Value: {}\nApproximate Real Value: {}'.format(full_inventory_value, overstocked_value, estimate_real_value))
 
 if __name__ == "__main__":
     main()
