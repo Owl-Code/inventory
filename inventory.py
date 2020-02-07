@@ -5,11 +5,6 @@ pd.set_option('display.width',1000)
 pd.set_option('display.max_rows',500)
 pd.set_option('display.max_columns',500)
 
-
-PRODUCT_DATA = {1: 'ProductImportTemplate.csv',
-                    2: 'StockBarcodeImportTemplate.csv',
-                    3: 'StockImportTemplate.csv'}
-
 def select_data():
     """
         Ask user for a csv filename(s)
