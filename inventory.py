@@ -131,15 +131,21 @@ def find_avg_sale_price(df):
     return df[idx_price].mean()
 
 def main():
-    df = select_data()
-    df_join = df[0].merge(df[1], on='Product Name')
+    df_list = select_data()
+    df_join = []
+    if len(df_list) > 1:
+        for x in range(len(df_list)):
+            if x == 0:
+                df_join = df_list[x]
+            else:
+                df_join = df_join.merge(df_list[x])
     explore_data(df_join)
     null_df = find_null(df_join)
     explore_data(null_df)
     inventory_df = find_inventory(df_join)
     explore_data(inventory_df)
     full_inventory_value = find_sell_value(df_join)
-    overstocked_value = find_sell_value(inventory_df.merge(df[0]))
+    overstocked_value = find_sell_value(inventory_df.merge(df_list[0]))
     avg_sale_price = find_avg_sale_price(df_join)
     estimate_real_value = full_inventory_value - overstocked_value + (K * SKU_OVER_K * avg_sale_price)
     print('Average sale price: {}'.format(avg_sale_price))
