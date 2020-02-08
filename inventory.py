@@ -133,12 +133,11 @@ def find_avg_sale_price(df):
 def main():
     df_list = select_data()
     df_join = []
-    if len(df_list) > 1:
-        for x in range(len(df_list)):
-            if x == 0:
-                df_join = df_list[x]
-            else:
-                df_join = df_join.merge(df_list[x])
+    for x in range(len(df_list)):
+        if x == 0:
+            df_join = df_list[x]
+        else:
+            df_join = df_join.merge(df_list[x])
     explore_data(df_join)
     null_df = find_null(df_join)
     explore_data(null_df)
