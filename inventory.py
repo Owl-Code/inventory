@@ -130,6 +130,26 @@ def find_avg_sale_price(df):
         return 0
     return df[idx_price].mean()
 
+def select_columns(df):
+    """
+        Prompts user for which columns they would like to display and returns a filtered data frame
+        ARGS:
+            (pandas.DataFrame) df
+        RETURNS:
+            df - sorted by which columns user select
+    """
+    print('Which columns to show?')
+    for i, column in enumerate(df.columns):
+        print('{}. {}'.format(i, column))
+    selected = list(map(int ,input('Enter column number(s) seperated by commas.\n').split(', ')))
+    columns = []
+    for i, column in enumerate(df.columns):
+        if i in selected:
+            columns.append(column)
+    df = df[columns]
+    return df
+
+
 def main():
     df_list = select_data()
     df_join = []
@@ -138,6 +158,8 @@ def main():
             df_join = df_list[x]
         else:
             df_join = df_join.merge(df_list[x])
+    df_join = select_columns(df_join)
+
     explore_data(df_join)
     null_df = find_null(df_join)
     explore_data(null_df)
