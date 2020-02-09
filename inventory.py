@@ -142,11 +142,7 @@ def select_columns(df):
     for i, column in enumerate(df.columns):
         print('{}. {}'.format(i, column))
     selected = list(map(int ,input('Enter column number(s) seperated by commas.\n').split(', ')))
-    columns = []
-    for i, column in enumerate(df.columns):
-        if i in selected:
-            columns.append(column)
-    df = df[columns]
+    df = df.iloc[:,selected]
     return df
 
 
