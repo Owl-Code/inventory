@@ -167,6 +167,7 @@ def main():
     estimate_real_value = full_inventory_value - overstocked_value + (K * SKU_OVER_K * avg_sale_price)
     print('Average sale price: {}'.format(avg_sale_price))
     print('Full inventory value: {}\nOverstocked Value: {}\nApproximate Real Value: {}'.format(full_inventory_value, overstocked_value, estimate_real_value))
+    explore_data(df_join[df_join['Barcode'].duplicated() & (((df_join['Current Stock']<900)==True) | ((df_join['Current Stock']>1050)==True))])
 
 if __name__ == "__main__":
     main()
