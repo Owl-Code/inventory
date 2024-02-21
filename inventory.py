@@ -7,7 +7,7 @@ pd.set_option('display.max_columns',500)
 
 SKU_OVER_K = 7
 K = 1000
-
+ 
 def select_data():
     """
         Ask user for a csv filename(s)
